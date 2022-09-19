@@ -51,7 +51,7 @@ constructor(string memory name, string memory symbol, string memory uri) ERC1155
             return true;
         }
     }
-        function addPlan(string memory _name, string memory uri, uint256 price, uint time) external onlyOwner {
+    function addPlan(string memory _name, string memory uri, uint256 price, uint time) external onlyOwner {
         totalPlans = totalPlans.add(1);
         uint256 id = totalPlans.add(1);
         plans[id] = plan(_name, uri, 0, price, time);
@@ -88,6 +88,10 @@ constructor(string memory name, string memory symbol, string memory uri) ERC1155
 
     function tokenPrice(uint id) public correctId(id) view returns(uint) {
         return plans[id].price;
+    }
+
+    function tokenTime(uint id) public correctId(id) view returns(uint) {
+        return plans[id].time;
     }
 
 
