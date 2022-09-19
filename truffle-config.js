@@ -25,6 +25,7 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim();
+require('dotenv').config();
 
 module.exports = {
   /**
@@ -50,7 +51,7 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
     matic: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com/v1/ced75bb6bd170a94d00b78d63c62025d8027d070`),
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com`),
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
@@ -123,4 +124,11 @@ module.exports = {
   //   }
   // }
   // }
+  api_keys: {
+    polygonscan: process.env.POLYGONSCAN_API_KEY
+  },
+  plugins: ['truffle-plugin-verify']
 };
+
+//tx hash mumbai : 0xacd8900f159dc580b9e5f01f6a3259560c41150cc2e952039c813245527fa941
+//address : 0xE2FA18c3FFc0C60a0e6DAC1e1b519D74be270c5f
