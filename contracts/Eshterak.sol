@@ -1,9 +1,10 @@
-//SPDX-Licence-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 contract Eshterak is ERC1155, Ownable {
 
@@ -29,7 +30,9 @@ contract Eshterak is ERC1155, Ownable {
     uint256 public totalPlans;
 
 
-constructor(string memory name, string memory symbol, string memory uri) ERC1155(uri) {}
+constructor(string memory name, string memory symbol, string memory uri) ERC1155(uri) {
+    console.log("Name is %o and symbol is %o and uri is %o", name, symbol, uri);
+}
 
     modifier correctId(uint id) {
         require(id <= totalPlans && id>0, "provide a correct planID");
@@ -52,9 +55,11 @@ constructor(string memory name, string memory symbol, string memory uri) ERC1155
         }
     }
     function addPlan(string memory _name, string memory uri, uint256 price, uint time) external onlyOwner {
-        totalPlans = totalPlans.add(1);
-        uint256 id = totalPlans.add(1);
+        console.log("totalPlans is %o", totalPlans);
+        totalPlans = totalPlans + 1;
+        uint256 id = totalPlans + 1;
         plans[id] = plan(_name, uri, 0, price, time);
+        console.log("totalPlans is %o and id is %o", totalPlans, id);
     }
 
     function updatePlan(uint id, string memory _name, string memory uri, uint256 price, uint time) external onlyOwner {
@@ -62,19 +67,22 @@ constructor(string memory name, string memory symbol, string memory uri) ERC1155
     }
 
     function subscribe(uint256 planId) external correctId(planId) payable {
+        console.log("planId is %o and totalPlans is %o", planId, totalPlans);
         require(ifExpired(planId) == true, "your current plan hasn't expired yet");
-        require(msg.value == plans[planId].price, "please send correct amount of ether");
-        plans[planId].subscribers = (plans[planId].subscribers).add(1);
+        require(msg.value == plans[planId].price, "please send correct amount of price");
+        plans[planId].subscribers = plans[planId].subscribers + 1;
         subscribers[msg.sender] = subscriber(planId, block.timestamp);
         _burn(msg.sender, subscribers[msg.sender].plan, balanceOf(msg.sender, subscribers[msg.sender].plan));
-        plans[subscribers[msg.sender].plan].subscribers = (plans[subscribers[msg.sender].plan].subscribers).sub(balanceOf(msg.sender, subscribers[msg.sender].plan));
+        plans[subscribers[msg.sender].plan].subscribers = (plans[subscribers[msg.sender].plan].subscribers) - balanceOf(msg.sender, subscribers[msg.sender].plan);
         _mint(msg.sender, planId, 1, "");
         payable(msg.sender).transfer(msg.value);
+        console.log("planId is %o and totalPlans is %o", planId, totalPlans);
     }
 
 
     function currentPlan(address user) public view returns(uint) {
-        require((block.timestamp).sub(subscribers[msg.sender].date) < plans[subscribers[msg.sender].plan].time, "deosn't have any active plan");
+        console.log("user is %o and block.timestamp is %o", user, totalPlans);
+        require((block.timestamp - subscribers[msg.sender].date) < plans[subscribers[msg.sender].plan].time, "deosn't have any active plan");
         return subscribers[user].plan;
     }
 
