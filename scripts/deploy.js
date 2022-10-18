@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
 
     const Eshterak = await hre.ethers.getContractFactory("Eshterak");
-    const eshterak = await Eshterak.deploy("Moshtarek1", "Mosh", "https://github.com/");
+    const eshterak = await Eshterak.deploy();
 
     await eshterak.deployed();
 
@@ -18,3 +18,5 @@ main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
+
+//0x5FbDB2315678afecb367f032d93F642f64180aa3

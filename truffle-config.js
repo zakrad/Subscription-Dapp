@@ -130,5 +130,5 @@ module.exports = {
   plugins: ['truffle-plugin-verify']
 };
 
-//tx hash mumbai : 0xacd8900f159dc580b9e5f01f6a3259560c41150cc2e952039c813245527fa941
-//address : 0xE2FA18c3FFc0C60a0e6DAC1e1b519D74be270c5f
+//tx hash mumbai : 0x619ba4774ee905a335966550f161d3359bded2ea8dfb359455545562cb6ba19a
+//address : 0x20aB5B9FbCe9F3972c630eA07ff62aF1CCda3D27
